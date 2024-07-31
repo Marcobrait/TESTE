@@ -12,78 +12,101 @@
 </body>
 </html>
 <script>
-    var options = {
-          series: [
-          {
-            name: "High - 2013",
-            data: [28, 29, 33, 36, 32, 32, 33]
-          },
-          {
-            name: "Low - 2013",
-            data: [12, 11, 14, 18, 17, 13, 13]
-          }
-        ],
+     var options = {
+          series: [{
+          data: seriesData
+        }],
           chart: {
-          height: 350,
-          type: 'line',
-          dropShadow: {
-            enabled: true,
-            color: '#000',
-            top: 18,
-            left: 7,
-            blur: 10,
-            opacity: 0.2
+          type: 'candlestick',
+          height: 290,
+          id: 'candles',
+          toolbar: {
+            autoSelected: 'pan',
+            show: false
           },
           zoom: {
             enabled: false
           },
-          toolbar: {
-            show: false
+        },
+        plotOptions: {
+          candlestick: {
+            colors: {
+              upward: '#3C90EB',
+              downward: '#DF7D46'
+            }
           }
-        },
-        colors: ['#77B6EA', '#545454'],
-        dataLabels: {
-          enabled: true,
-        },
-        stroke: {
-          curve: 'smooth'
-        },
-        title: {
-          text: 'Exemplo de Gráfico',
-          align: 'left'
-        },
-        grid: {
-          borderColor: '#e7e7e7',
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        markers: {
-          size: 1
         },
         xaxis: {
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-          title: {
-            text: 'Mês'
-          }
-        },
-        yaxis: {
-          title: {
-            text: 'Temperatura'
-          },
-          min: 5,
-          max: 40
-        },
-        legend: {
-          position: 'top',
-          horizontalAlign: 'right',
-          floating: true,
-          offsetY: -25,
-          offsetX: -5
+          type: 'datetime'
         }
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        var chart = new ApexCharts(document.querySelector("#chart-candlestick"), options);
         chart.render();
+      
+        var optionsBar = {
+          series: [{
+          name: 'volume',
+          data: seriesDataLinear
+        }],
+          chart: {
+          height: 160,
+          type: 'bar',
+          brush: {
+            enabled: true,
+            target: 'candles'
+          },
+          selection: {
+            enabled: true,
+            xaxis: {
+              min: new Date('20 Jan 2017').getTime(),
+              max: new Date('10 Dec 2017').getTime()
+            },
+            fill: {
+              color: '#ccc',
+              opacity: 0.4
+            },
+            stroke: {
+              color: '#0D47A1',
+            }
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: '80%',
+            colors: {
+              ranges: [{
+                from: -1000,
+                to: 0,
+                color: '#F15B46'
+              }, {
+                from: 1,
+                to: 10000,
+                color: '#FEB019'
+              }],
+        
+            },
+          }
+        },
+        stroke: {
+          width: 0
+        },
+        xaxis: {
+          type: 'datetime',
+          axisBorder: {
+            offsetX: 13
+          }
+        },
+        yaxis: {
+          labels: {
+            show: false
+          }
+        }
+        };
+
+        var chartBar = new ApexCharts(document.querySelector("#chart"), optionsBar);
+        chartBar.render();
 </script>
